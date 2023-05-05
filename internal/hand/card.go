@@ -1,20 +1,45 @@
-package hand
+package game
 
-// Card represents a standard playing card.
 type Card struct {
-    Rank string // The rank of the card, e.g. "2", "3", ..., "Q", "K", "A".
-    Suit string // The suit of the card, e.g. "Spades", "Hearts", "Diamonds", "Clubs".
+	Value int
+	Suit  string
 }
 
-// NewCard creates and returns a new card with the given rank and suit.
-func NewCard(rank, suit string) *Card {
-    return &Card{
-        Rank: rank,
-        Suit: suit,
-    }
+func NewCard(cardStr string) Card {
+	valueStr := cardStr[:len(cardStr)-1]
+	switch valueStr {
+	case "A":
+		return Card{14, cardStr[len(cardStr)-1:]}
+	case "K":
+		return Card{13, cardStr[len(cardStr)-1:]}
+	case "Q":
+		return Card{12, cardStr[len(cardStr)-1:]}
+	case "J":
+		return Card{11, cardStr[len(cardStr)-1:]}
+	case "T":
+		return Card{10, cardStr[len(cardStr)-1:]}
+	default:
+		return Card{int(valueStr[0] - '0'), cardStr[len(cardStr)-1:]}
+	}
 }
 
-// String returns the string representation of the card, e.g. "2 of Spades".
-func (c *Card) String() string {
-    return c.Rank + " of " + c.Suit
+func (c Card) String() string {
+	return getValueStr(c.Value) + c.Suit
+}
+
+func getValueStr(value int) string {
+	switch value {
+	case 14:
+		return "A"
+	case 13:
+		return "K"
+	case 12:
+		return "Q"
+	case 11:
+		return "J"
+	case 10:
+		return "T"
+	default:
+		return string(value+'0')
+	}
 }
